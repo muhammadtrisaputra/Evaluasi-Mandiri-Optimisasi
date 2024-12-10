@@ -1,0 +1,25 @@
+using JuMP
+using GLPK
+
+# Membuat model optimisasi dengan solver GLPK
+model = Model(GLPK.Optimizer)
+
+# Menambahkan variabel
+@variable(model, x >= 0)  # Variabel x yang tidak negatif
+@variable(model, y >= 0)  # Variabel y yang tidak negatif
+
+# Menambahkan fungsi objektif (minimalkan x + y)
+@objective(model, Min, x + y)
+
+# Menambahkan kendala
+@constraint(model, 2x + y >= 10)  # 2x + y >= 10
+@constraint(model, x + 2y >= 15)  # x + 2y >= 15
+@constraint(model, x - y == 0)    # x - y = 0
+
+# Menyelesaikan masalah optimisasi
+optimize!(model)
+
+# Menampilkan hasil optimisasi
+println("Status optimisasi: ", termination_status(model))
+println("Nilai optimal x: ", value(x))
+println("Nilai optimal y: ", value(y))
