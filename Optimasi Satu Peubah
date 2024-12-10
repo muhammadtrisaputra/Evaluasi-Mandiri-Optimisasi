@@ -1,0 +1,18 @@
+using JuMP
+using Ipopt
+
+# Membuat model optimisasi dengan JuMP
+model = Model(Ipopt.Optimizer)
+
+# Mendefinisikan peubah dalam model
+@variable(model, x)
+
+# Menetapkan fungsi objektif yang ingin dioptimalkan
+@objective(model, Min, (x - 3)^2 + 4)
+
+# Menyelesaikan masalah optimisasi
+optimize!(model)
+
+# Menampilkan hasil optimisasi
+println("Nilai optimal x: ", value(x))
+println("Nilai minimum dari fungsi objektif: ", objective_value(model))
