@@ -1,0 +1,27 @@
+# Mengimpor paket yang diperlukan
+using JuMP
+using GLPK
+
+# Membuat model optimisasi
+model = Model(GLPK.Optimizer)
+
+# Menambahkan variabel keputusan
+@variable(model, x1 >= 0)  # x1 ≥ 0
+@variable(model, x2 >= 0)  # x2 ≥ 0
+
+# Menambahkan fungsi objektif (maximize 3x1 + 2x2)
+@objective(model, Max, 3*x1 + 2*x2)
+
+# Menambahkan kendala
+@constraint(model, x1 + x2 <= 4)  # x1 + x2 ≤ 4
+@constraint(model, x1 >= 1)  # x1 ≥ 1
+@constraint(model, x2 >= 2)  # x2 ≥ 2
+
+# Menyelesaikan masalah optimisasi
+optimize!(model)
+
+# Menampilkan hasil
+println("Status: ", termination_status(model))
+println("Nilai optimal x1: ", value(x1))
+println("Nilai optimal x2: ", value(x2))
+println("Nilai fungsi objektif: ", objective_value(model))
