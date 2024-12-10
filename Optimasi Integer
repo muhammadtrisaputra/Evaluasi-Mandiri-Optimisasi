@@ -1,0 +1,26 @@
+using JuMP
+using HiGHS
+
+# Membuat model dengan solver HiGHS
+model = Model(HiGHS.Optimizer)
+
+# Mendefinisikan variabel integer
+@variable(model, x >= 0, Int)
+@variable(model, y >= 0, Int)
+
+# Mendefinisikan fungsi objektif
+@objective(model, Max, 3x + 5y)
+
+# Menambahkan kendala
+@constraint(model, x + 2y <= 8)
+@constraint(model, 3x + 2y <= 12)
+
+# Menyelesaikan model
+optimize!(model)
+
+# Menampilkan hasil
+println("Status: ", termination_status(model))
+println("Nilai optimal:")
+println("x = ", value(x))
+println("y = ", value(y))
+println("z = ", objective_value(model))
