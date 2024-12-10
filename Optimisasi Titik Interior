@@ -1,0 +1,24 @@
+using JuMP, Ipopt
+
+# Membuat model optimisasi
+model = Model(Ipopt.Optimizer)
+
+# Menambah variabel
+@variable(model, x1 >= 0)
+@variable(model, x2 >= 0)
+
+# Menambah fungsi tujuan
+@objective(model, Min, x1^2 + x2^2)
+
+# Menambah batasan
+@constraint(model, x1 + x2 >= 1)
+@constraint(model, x1 - x2 >= 0)
+
+# Memecahkan masalah optimisasi
+optimize!(model)
+
+# Mendapatkan solusi optimal
+optimal_x1 = value(x1)
+optimal_x2 = value(x2)
+
+println("Solusi optimal x1 = $optimal_x1, x2 = $optimal_x2")
