@@ -1,0 +1,28 @@
+using JuMP
+using GLPK
+
+# Membuat model optimisasi
+model = Model(GLPK.Optimizer)
+
+# Mendefinisikan variabel
+@variable(model, x >= 0)
+@variable(model, y >= 0)
+
+# Mendefinisikan fungsi tujuan
+@objective(model, Max, 3x + 4y)
+
+# Menambahkan kendala
+@constraint(model, 2x + y <= 10)
+@constraint(model, x + 2y <= 8)
+
+# Menyelesaikan model
+optimize!(model)
+
+# Mengambil hasil
+optimal_value = objective_value(model)
+optimal_x = value(x)
+optimal_y = value(y)
+
+println("Nilai optimal Z: ", optimal_value)
+println("Nilai optimal x: ", optimal_x)
+println("Nilai optimal y: ", optimal_y)
