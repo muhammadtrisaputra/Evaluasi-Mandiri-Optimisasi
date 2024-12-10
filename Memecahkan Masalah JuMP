@@ -1,0 +1,28 @@
+using JuMP
+using Ipopt
+
+# Membuat model optimasi
+model = Model(Ipopt.Optimizer)
+
+# Mendefinisikan variabel: panjang alas (b) dan tinggi (h)
+@variable(model, b >= 0)  # panjang alas
+@variable(model, h >= 0)  # tinggi
+
+# Fungsi objektif: Memaksimalkan luas segitiga (0.5 * b * h)
+@objective(model, Max, 0.5 * b * h)
+
+# Menambahkan batasan (opsional, misalnya batasan panjang alas dan tinggi)
+@constraint(model, b <= 10)  # batasan panjang alas maksimal 10
+@constraint(model, h <= 10)  # batasan tinggi maksimal 10
+
+# Menyelesaikan masalah optimasi
+optimize!(model)
+
+# Mengambil hasil optimasi
+optimal_b = value(b)
+optimal_h = value(h)
+optimal_area = objective_value(model)
+
+println("Panjang alas optimal: ", optimal_b)
+println("Tinggi optimal: ", optimal_h)
+println("Luas segitiga optimal: ", optimal_area)
