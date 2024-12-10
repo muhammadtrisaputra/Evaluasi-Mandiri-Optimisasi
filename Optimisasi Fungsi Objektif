@@ -1,0 +1,25 @@
+using JuMP
+using GLPK
+
+# Membuat model optimisasi
+model = Model(GLPK.Optimizer)
+
+# Menambahkan variabel
+@variable(model, x >= 0)
+@variable(model, y >= 0)
+
+# Menambahkan fungsi objektif (minimalkan 3x + 2y)
+@objective(model, Min, 3x + 2y)
+
+# Menambahkan kendala
+@constraint(model, x + 2y >= 4)
+@constraint(model, 3x - y >= 3)
+
+# Menyelesaikan model
+optimize!(model)
+
+# Menampilkan hasil
+println("Status: ", termination_status(model))
+println("Nilai x: ", value(x))
+println("Nilai y: ", value(y))
+println("Fungsi objektif: ", objective_value(model))
